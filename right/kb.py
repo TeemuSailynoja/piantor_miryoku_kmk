@@ -5,8 +5,7 @@ from kmk.scanners.keypad import KeysScanner
 
 
 # split side
-
-isRight = True 
+isRight = True
 
 # GPIO to key mapping, Left
 _KEY_CFG_LEFT = [
@@ -26,10 +25,15 @@ _KEY_CFG_RIGHT = [
 
 class KMKKeyboard(_KMKKeyboard):
     def __init__(self):
+        super().__init__()
+
         # create and register the scanner
         self.matrix = KeysScanner(
-            pins = _KEY_CFG_RIGHT if isRight == True else _KEY_CFG_LEFT
+            pins = _KEY_CFG_RIGHT if isRight == True else _KEY_CFG_LEFT,
+            value_when_pressed=False,
         )
+        self.coord_mapping = KMKKeyboard.coord_mapping
+
 
     # flake8: noqa
     # fmt: off
