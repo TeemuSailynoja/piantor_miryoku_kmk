@@ -1,11 +1,7 @@
 # Copyright 2022 Manna Harbour
 # github.com/manna-harbour/miryoku
-# generated
-#import busio
+
 import board
-#i2c = busio.I2C(scl=board.GP1, sda=board.GP0)
-        
-       
 from kb import KMKKeyboard, isRight; keyboard = KMKKeyboard()
 from kmk.modules.split import Split, SplitSide, SplitType
 from kmk.keys import KC
@@ -16,7 +12,7 @@ from kmk.modules.mouse_keys import MouseKeys; keyboard.modules.append(MouseKeys(
 from kmk.modules.tapdance import TapDance; keyboard.modules.append(TapDance())
 from kmk.extensions.media_keys import MediaKeys; keyboard.extensions.append(MediaKeys())
 from kmk.modules.capsword import CapsWord; keyboard.modules.append(CapsWord())
-
+from kmk.modules.macros import Macros, Press, Release, Tap; keyboard.modules.append(Macros())
 split_side = SplitSide.RIGHT if isRight else SplitSide.LEFT
 
 data_pin = board.GP1 if split_side == SplitSide.LEFT else board.GP0
@@ -31,28 +27,36 @@ split = Split(
 )
 keyboard.modules.append(split)
 
+NoShiftColon = KC.MACRO(Release(KC.LSHIFT), Tap(KC.COLON), Press(KC.LSHIFT))
+NoShiftSColon = KC.MACRO(Release(KC.LSHIFT), Tap(KC.SCOLON), Press(KC.LSHIFT))
 
 keyboard.keymap = [
 # BASE
 [
 KC.NO, KC.Q, KC.W, KC.F, KC.P, KC.B, KC.J, KC.L, KC.U, KC.Y, KC.QUOT, KC.NO,
-KC.NO, KC.HT(KC.A, KC.LGUI, prefer_hold=False, tap_interrupted=True, tap_time=200), KC.HT(KC.R, KC.LALT, prefer_hold=False, tap_interrupted=True, tap_time=200), KC.HT(KC.S, KC.LCTL, prefer_hold=False, tap_interrupted=True, tap_time=200), KC.HT(KC.T, KC.LSFT, prefer_hold=False, tap_interrupted=True, tap_time=200), KC.G, KC.M, KC.HT(KC.N, KC.LSFT, prefer_hold=False, tap_interrupted=True, tap_time=200), KC.HT(KC.E, KC.LCTL, prefer_hold=False, tap_interrupted=True, tap_time=200), KC.HT(KC.I, KC.LALT, prefer_hold=False, tap_interrupted=True, tap_time=200), KC.HT(KC.O, KC.LGUI, prefer_hold=False, tap_interrupted=True, tap_time=200), KC.NO,
-KC.NO, KC.LT(3, KC.Z, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.HT(KC.X, KC.RALT, prefer_hold=False, tap_interrupted=True, tap_time=200), KC.C, KC.D, KC.V, KC.K, KC.H, KC.COMM, KC.HT(KC.DOT, KC.RALT, prefer_hold=False, tap_interrupted=True, tap_time=200), KC.LT(3, KC.SLSH, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.NO,
-KC.LT(6, KC.ESC, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.LT(4, KC.SPC, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.LT(5, KC.TAB, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.LT(8, KC.ENT, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.LT(7, KC.BSPC, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.LT(9, KC.DEL, prefer_hold=True, tap_interrupted=False, tap_time=200)
+KC.NO, KC.HT(KC.A, KC.LGUI, prefer_hold=False, tap_interrupted=True, tap_time=300), KC.HT(KC.R, KC.LALT, prefer_hold=False, tap_interrupted=True, tap_time=250), KC.HT(KC.S, KC.LCTL, prefer_hold=False, tap_interrupted=True, tap_time=250), KC.HT(KC.T, KC.LM(3, KC.LSHIFT), prefer_hold=False, tap_interrupted=True, tap_time=250), KC.G, KC.M, KC.HT(KC.N, KC.LSFT, prefer_hold=False, tap_interrupted=True, tap_time=250), KC.HT(KC.E, KC.LCTL, prefer_hold=False, tap_interrupted=True, tap_time=250), KC.HT(KC.I, KC.LALT, prefer_hold=False, tap_interrupted=True, tap_time=250), KC.HT(KC.O, KC.LGUI, prefer_hold=False, tap_interrupted=True, tap_time=250), KC.NO,
+KC.NO, KC.LT(4, KC.Z, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.HT(KC.X, KC.RALT, prefer_hold=False, tap_interrupted=True, tap_time=300), KC.C, KC.D, KC.V, KC.K, KC.H, KC.COMM, KC.HT(KC.DOT, KC.RALT, prefer_hold=False, tap_interrupted=True, tap_time=300), KC.LT(4, KC.MINS, prefer_hold=True, tap_interrupted=False, tap_time=300), KC.NO,
+KC.LT(7, KC.ESC, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.LT(5, KC.SPC, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.LT(6, KC.TAB, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.LT(9, KC.ENT, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.LT(8, KC.BSPC, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.LT(10, KC.DEL, prefer_hold=True, tap_interrupted=False, tap_time=200)
 ],
 # EXTRA
 [
 KC.NO, KC.Q, KC.W, KC.E, KC.R, KC.T, KC.Y, KC.U, KC.I, KC.O, KC.P, KC.NO,
 KC.NO, KC.HT(KC.A, KC.LGUI, prefer_hold=False, tap_interrupted=True, tap_time=200), KC.HT(KC.S, KC.LALT, prefer_hold=False, tap_interrupted=True, tap_time=200), KC.HT(KC.D, KC.LCTL, prefer_hold=False, tap_interrupted=True, tap_time=200), KC.HT(KC.F, KC.LSFT, prefer_hold=False, tap_interrupted=True, tap_time=200), KC.G, KC.H, KC.HT(KC.J, KC.LSFT, prefer_hold=False, tap_interrupted=True, tap_time=200), KC.HT(KC.K, KC.LCTL, prefer_hold=False, tap_interrupted=True, tap_time=200), KC.HT(KC.L, KC.LALT, prefer_hold=False, tap_interrupted=True, tap_time=200), KC.HT(KC.QUOT, KC.LGUI, prefer_hold=False, tap_interrupted=True, tap_time=200), KC.NO,
-KC.NO, KC.LT(3, KC.Z, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.HT(KC.X, KC.RALT, prefer_hold=False, tap_interrupted=True, tap_time=200), KC.C, KC.V, KC.B, KC.N, KC.M, KC.COMM, KC.HT(KC.DOT, KC.RALT, prefer_hold=False, tap_interrupted=True, tap_time=200), KC.LT(3, KC.SLSH, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.NO,
-KC.LT(6, KC.ESC, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.LT(4, KC.SPC, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.LT(5, KC.TAB, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.LT(8, KC.ENT, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.LT(7, KC.BSPC, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.LT(9, KC.DEL, prefer_hold=True, tap_interrupted=False, tap_time=200)
+KC.NO, KC.LT(4, KC.Z, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.HT(KC.X, KC.RALT, prefer_hold=False, tap_interrupted=True, tap_time=200), KC.C, KC.V, KC.B, KC.N, KC.M, KC.COMM, KC.HT(KC.DOT, KC.RALT, prefer_hold=False, tap_interrupted=True, tap_time=200), KC.LT(4, KC.MINS, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.NO,
+KC.LT(7, KC.ESC, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.LT(5, KC.SPC, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.LT(6, KC.TAB, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.LT(9, KC.ENT, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.LT(8, KC.BSPC, prefer_hold=True, tap_interrupted=False, tap_time=200), KC.LT(10, KC.DEL, prefer_hold=True, tap_interrupted=False, tap_time=200)
 ],
 # TAP
 [
 KC.NO, KC.Q, KC.W, KC.F, KC.P, KC.B, KC.J, KC.L, KC.U, KC.Y, KC.QUOT, KC.NO,
 KC.NO, KC.A, KC.R, KC.S, KC.T, KC.G, KC.M, KC.N, KC.E, KC.I, KC.O, KC.NO,
-KC.NO, KC.Z, KC.X, KC.C, KC.D, KC.V, KC.K, KC.H, KC.COMM, KC.DOT, KC.SLSH, KC.NO,
+KC.NO, KC.Z, KC.X, KC.C, KC.D, KC.V, KC.K, KC.H, KC.COMM, KC.DOT, KC.MINS, KC.NO,
 KC.ESC, KC.SPC, KC.TAB, KC.ENT, KC.BSPC, KC.DEL
+],
+[
+KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS,
+KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS,
+KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS, NoShiftSColon, NoShiftColon, KC.TRNS, KC.TRNS,
+KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS, KC.TRNS
 ],
 # BUTTON
 [
@@ -84,17 +88,17 @@ KC.NO, KC.NO, KC.NO, KC.MSTP, KC.MPLY, KC.MUTE
 ],
 # NUM
 [
-KC.NO, KC.LBRC, KC.N7, KC.N8, KC.N9, KC.RBRC, KC.NO, KC.TD(KC.NO, KC.DF(0), tap_time=200), KC.TD(KC.NO, KC.DF(1), tap_time=200), KC.TD(KC.NO, KC.DF(2), tap_time=200), KC.TD(KC.NO, KC.RELOAD, tap_time=200), KC.NO,
-KC.NO, KC.SCLN, KC.N4, KC.N5, KC.N6, KC.EQL, KC.NO, KC.LSFT, KC.LCTL, KC.LALT, KC.LGUI, KC.NO,
-KC.NO, KC.GRV, KC.N1, KC.N2, KC.N3, KC.BSLS, KC.NO, KC.TD(KC.NO, KC.DF(7), tap_time=200), KC.TD(KC.NO, KC.DF(4), tap_time=200), KC.RALT, KC.NO, KC.NO,
+KC.NO, KC.LBRC, KC.N4, KC.N5, KC.N6, KC.RBRC, KC.NO, KC.TD(KC.NO, KC.DF(0), tap_time=200), KC.TD(KC.NO, KC.DF(1), tap_time=200), KC.TD(KC.NO, KC.DF(2), tap_time=200), KC.TD(KC.NO, KC.RELOAD, tap_time=200), KC.NO,
+KC.NO, KC.AT, KC.N1, KC.N2, KC.N3, KC.BSLS, KC.NO, KC.LSFT, KC.LCTL, KC.LALT, KC.LGUI, KC.NO,
+KC.NO, KC.COMM, KC.N7, KC.N8, KC.N9, KC.PERCENT, KC.NO, KC.TD(KC.NO, KC.DF(7), tap_time=200), KC.TD(KC.NO, KC.DF(4), tap_time=200), KC.RALT, KC.NO, KC.NO,
 KC.DOT, KC.N0, KC.MINS, KC.NO, KC.NO, KC.NO
 ],
 # SYM
 [
-KC.NO, KC.LCBR, KC.AMPR, KC.ASTR, KC.LPRN, KC.RCBR, KC.NO, KC.TD(KC.NO, KC.DF(0), tap_time=200), KC.TD(KC.NO, KC.DF(1), tap_time=200), KC.TD(KC.NO, KC.DF(2), tap_time=200), KC.TD(KC.NO, KC.RELOAD, tap_time=200), KC.NO,
-KC.NO, KC.COLN, KC.DLR, KC.PERC, KC.CIRC, KC.PLUS, KC.NO, KC.LSFT, KC.LCTL, KC.LALT, KC.LGUI, KC.NO,
-KC.NO, KC.TILD, KC.EXLM, KC.AT, KC.HASH, KC.PIPE, KC.NO, KC.TD(KC.NO, KC.DF(8), tap_time=200), KC.TD(KC.NO, KC.DF(5), tap_time=200), KC.RALT, KC.NO, KC.NO,
-KC.LPRN, KC.RPRN, KC.UNDS, KC.NO, KC.NO, KC.NO
+KC.NO, KC.HASH, KC.CIRC, KC.DLR, KC.ASTR, KC.QUES, KC.NO, KC.TD(KC.NO, KC.DF(0), tap_time=200), KC.TD(KC.NO, KC.DF(1), tap_time=200), KC.TD(KC.NO, KC.DF(2), tap_time=200), KC.TD(KC.NO, KC.RELOAD, tap_time=200), KC.NO,
+KC.NO, KC.EXLM, KC.EQL, KC.LPRN, KC.RPRN, KC.SLSH, KC.NO, KC.LSFT, KC.LCTL, KC.LALT, KC.LGUI, KC.NO,
+KC.NO, KC.TILD, KC.AMPR, KC.LABK, KC.RABK, KC.PIPE, KC.NO, KC.TD(KC.NO, KC.DF(8), tap_time=200), KC.TD(KC.NO, KC.DF(5), tap_time=200), KC.RALT, KC.NO, KC.NO,
+KC.MINS, KC.SPC, KC.PLUS, KC.NO, KC.NO, KC.NO
 ],
 # FUN
 [
